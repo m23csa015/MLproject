@@ -88,7 +88,7 @@ class MLP(nn.Module):
         return x
 
 mlp_model = MLP()
-optimizer_mlp = optim.Adam(mlp_model.parameters(), lr=0.001)
+# optimizer_mlp = optim.Adam(mlp_model.parameters(), lr=0.001)
 criterion = nn.CrossEntropyLoss()
 
 def train(model, optimizer, criterion, train_loader, epochs):
@@ -135,26 +135,27 @@ def evaluate_multiclass(model, test_loader):
     class_recall = recall_score(y_true, y_pred, average=None)
 
     return accuracy, f1, confusion, class_precision, class_recall
-
+optimizer_mlp = ['adam','sgd','RMSprop']
+for opti in optimizer_mlp:
 # Train MLP
-train(mlp_model, optimizer_mlp, criterion, train_loader, epochs=10)
+    train(mlp_model, opti, criterion, train_loader, epochs=10)
 
-mlp_accuracy, mlp_f1, mlp_confusion, mlp_precision, mlp_recall = evaluate_multiclass(mlp_model, test_loader)
+    mlp_accuracy, mlp_f1, mlp_confusion, mlp_precision, mlp_recall = evaluate_multiclass(mlp_model, test_loader)
 
-print('MLP Accuracy:', mlp_accuracy)
-print('MLP F1 Score:', mlp_f1)
-print('MLP Confusion Matrix:')
-print(mlp_confusion)
-print('MLP Precision:', mlp_precision)
-print('MLP Recall:', mlp_recall)
+    print('MLP Accuracy:', mlp_accuracy)
+    print('MLP F1 Score:', mlp_f1)
+    print('MLP Confusion Matrix:')
+    print(mlp_confusion)
+    print('MLP Precision:', mlp_precision)
+    print('MLP Recall:', mlp_recall)
 
-plt.figure(figsize=(8, 6))
-plt.imshow(mlp_confusion, interpolation='nearest', cmap=plt.cm.Blues)
-plt.title('MLP Confusion Matrix')
-plt.colorbar()
-plt.xlabel('Predicted Label')
-plt.ylabel('True Label')
-plt.show()
+    plt.figure(figsize=(8, 6))
+    plt.imshow(mlp_confusion, interpolation='nearest', cmap=plt.cm.Blues)
+    plt.title('MLP Confusion Matrix')
+    plt.colorbar()
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.show()
 
 
 
